@@ -1,0 +1,16 @@
+{
+  "python.terminal.activateEnvironment": true,
+  "files.exclude": {
+    "**/__pycache__": true,
+    ".venv": true
+  },
+  "files.eol": "\n",
+  "OcpCadViewer.advanced.autostartTriggers": [
+    "from od.view import",
+    "from ocp_vscode import",
+    "import ocp_vscode"
+  ],
+  "[python]": {
+    "editor.rulers": [100]
+  }
+}

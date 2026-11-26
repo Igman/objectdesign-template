@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Preview design (OCP CAD Viewer)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "cwd": "${fileDirname}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "Preview design variant…",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "args": ["${input:variant}"],
+      "cwd": "${fileDirname}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "variant",
+      "type": "promptString",
+      "description": "Variant name from VARIANTS, 'default', or 'all' (side by side)",
+      "default": "all"
+    }
+  ]
+}

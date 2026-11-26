@@ -1,0 +1,50 @@
+"""{name}: remix of refs/{stl}.
+
+See README.md for the design brief and the source/license of the original.
+Remixes keep the original mesh and modify it with manifold3d booleans; the
+result is a mesh, so it exports to 3MF/STL but not STEP. If this design will
+keep evolving, consider re-creating it as a clean build123d model instead.
+"""
+
+from dataclasses import dataclass
+from pathlib import Path
+
+from build123d import *  # noqa: F403
+
+from od import mesh
+
+HERE = Path(__file__).parent
+SOURCE = HERE / "refs" / "{stl}"
+
+
+@dataclass
+class Params:
+    hole_d: float = 5.0      # example: a hole cut through the original
+    hole_x: float = 0.0
+    hole_y: float = 0.0
+
+
+VARIANTS: dict[str, Params] = {{}}
+
+
+def build(p: Params) -> dict:
+    original = mesh.load(SOURCE)
+    lo, hi = original.bounds
+    original.apply_translation((0, 0, -lo[2]))  # rest on the bed
+
+    with BuildPart() as cutter:
+        with Locations((p.hole_x, p.hole_y, 0)):
+            Cylinder(p.hole_d / 2, (hi[2] - lo[2]) * 3)
+    return {{"body": mesh.difference(original, cutter.part)}}
+
+
+def verify(parts: dict, p: Params) -> None:
+    m = parts["body"]
+    assert m.is_watertight, "remix result is not watertight"
+
+
+if __name__ == "__main__":
+    # Preview in the OCP CAD Viewer. Optional argument: a variant name, or "all".
+    from od.view import preview
+
+    preview(build, Params, VARIANTS)

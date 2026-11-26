@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Live preview (od watch)",
+      "detail": "Keeps the OCP CAD Viewer showing the design you last saved",
+      "type": "shell",
+      "command": "uv run od watch",
+      "isBackground": true,
+      "problemMatcher": [],
+      "runOptions": { "runOn": "folderOpen" },
+      "presentation": { "reveal": "silent", "panel": "dedicated", "clear": true }
+    }
+  ]
+}

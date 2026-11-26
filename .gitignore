@@ -1,0 +1,20 @@
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+
+# Scratch build output (released files live in projects/*/exports and renders)
+projects/*/build/
+
+# Viewer / editor / OS
+.ocp_vscode
+.ocpvscode
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+
+# Slicer backups/temp
+*.3mf.bak

@@ -1,0 +1,30 @@
+# Normalize line endings across macOS and Windows
+* text=auto eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Git LFS: meshes, CAD exchange files, images, documents
+*.stl  filter=lfs diff=lfs merge=lfs -text
+*.STL  filter=lfs diff=lfs merge=lfs -text
+*.3mf  filter=lfs diff=lfs merge=lfs -text
+*.3MF  filter=lfs diff=lfs merge=lfs -text
+*.step filter=lfs diff=lfs merge=lfs -text
+*.STEP filter=lfs diff=lfs merge=lfs -text
+*.stp  filter=lfs diff=lfs merge=lfs -text
+*.STP  filter=lfs diff=lfs merge=lfs -text
+*.obj  filter=lfs diff=lfs merge=lfs -text
+*.ply  filter=lfs diff=lfs merge=lfs -text
+*.glb  filter=lfs diff=lfs merge=lfs -text
+*.f3d  filter=lfs diff=lfs merge=lfs -text
+*.FCStd filter=lfs diff=lfs merge=lfs -text
+*.png  filter=lfs diff=lfs merge=lfs -text
+*.jpg  filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.heic filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text
+*.pdf  filter=lfs diff=lfs merge=lfs -text
+*.zip  filter=lfs diff=lfs merge=lfs -text
+
+# docs/ holds this README's images. Keep them out of LFS so GitHub template
+# copies get real files (template repos can't contain LFS objects).
+docs/** -filter -diff -merge -text

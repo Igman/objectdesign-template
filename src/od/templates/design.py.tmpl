@@ -1,0 +1,54 @@
+"""{name}: <one-line description>.
+
+See README.md for the design brief. Units: mm. Z up, modeled in print
+orientation with the part resting on z=0.
+
+Preview:  run this file in VS Code (OCP CAD Viewer shows the result)
+Check:    uv run od check {name}
+Render:   uv run od render {name}
+"""
+
+from dataclasses import dataclass
+
+from build123d import *  # noqa: F403
+
+from od import tol
+
+
+@dataclass
+class Params:
+    width: float = 60.0      # overall X size
+    depth: float = 40.0      # overall Y size
+    height: float = 20.0     # overall Z size
+    corner_r: float = 4.0    # vertical edge radius
+    hole_d: float = 3.0      # nominal screw diameter (M3)
+
+
+# Optional named presets; `od build` exports each one. Leave empty for a single config.
+VARIANTS: dict[str, Params] = {{}}
+
+
+def build(p: Params) -> dict[str, Part]:
+    """Return one Part per material/tool, keyed by a short name."""
+    with BuildPart() as body:
+        Box(p.width, p.depth, p.height, align=(Align.CENTER, Align.CENTER, Align.MIN))
+        fillet(body.edges().filter_by(Axis.Z), p.corner_r)
+        chamfer(body.edges().group_by(Axis.Z)[0], tol.BOTTOM_CHAMFER)
+        with Locations(body.faces().sort_by(Axis.Z)[-1]):
+            Hole(tol.SCREW_CLEARANCE["M3"] / 2)
+    return {{"body": body.part}}
+
+
+def verify(parts: dict[str, Part], p: Params) -> None:
+    """Key dimensions from the brief. Raise AssertionError on mismatch."""
+    bb = parts["body"].bounding_box()
+    assert abs(bb.size.X - p.width) < 0.01, f"width {{bb.size.X:.2f}} != {{p.width}}"
+    assert abs(bb.size.Y - p.depth) < 0.01, f"depth {{bb.size.Y:.2f}} != {{p.depth}}"
+    assert abs(bb.size.Z - p.height) < 0.01, f"height {{bb.size.Z:.2f}} != {{p.height}}"
+
+
+if __name__ == "__main__":
+    # Preview in the OCP CAD Viewer. Optional argument: a variant name, or "all".
+    from od.view import preview
+
+    preview(build, Params, VARIANTS)

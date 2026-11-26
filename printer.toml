@@ -1,0 +1,24 @@
+# Your printer. Edit this first: every design, `od check` and the shared
+# tolerances in src/od/tol.py read these values. Run `uv run od setup` to see
+# what's loaded.
+
+name = "Generic FDM printer"   # shown in check warnings
+slicer = "your slicer"         # e.g. Bambu Studio, OrcaSlicer, PrusaSlicer, Cura (used in docs/prompts)
+
+# Build volume in mm. `od check` warns when a design doesn't fit.
+[bed]
+x = 220.0
+y = 220.0
+z = 250.0
+
+# Filaments one print job can use: AMS/MMU slots, toolchanger heads or IDEX.
+# 1 = single material. `od check` warns when a design has more parts than this.
+[materials]
+slots = 1
+
+# Default process. Walls and minimum feature sizes are derived from these.
+[process]
+nozzle = 0.4        # mm
+layer = 0.2         # mm
+first_layer = 0.2   # mm
+line_width = 0.42   # mm extrusion width
